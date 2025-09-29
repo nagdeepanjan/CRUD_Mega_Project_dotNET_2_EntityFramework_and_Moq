@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 //Add services to IoC container
 builder.Services.AddSingleton<ICountriesService, CountriesService>();
 builder.Services.AddSingleton<IPersonsService, PersonsService>();
-builder.Services.AddDbContext<DeepDbContext>(options=>options.UseSqlServer());
+builder.Services.AddDbContext<DeepDbContext>(options=>options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
 
 var app = builder.Build();
 app.UseStaticFiles();
