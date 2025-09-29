@@ -1,3 +1,5 @@
+using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using Services;
 
@@ -7,6 +9,7 @@ builder.Services.AddControllersWithViews();
 //Add services to IoC container
 builder.Services.AddSingleton<ICountriesService, CountriesService>();
 builder.Services.AddSingleton<IPersonsService, PersonsService>();
+builder.Services.AddDbContext<DeepDbContext>(options=>options.UseSqlServer());
 
 var app = builder.Build();
 app.UseStaticFiles();
