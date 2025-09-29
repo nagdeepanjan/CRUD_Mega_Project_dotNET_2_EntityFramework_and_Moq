@@ -9,7 +9,6 @@ namespace Entities
     {
         [Key]
         public Guid PersonID { get; set; }
-
         [StringLength(40)] //nvarchar(40)
         public string? PersonName { get; set; }
         [StringLength(40)]
