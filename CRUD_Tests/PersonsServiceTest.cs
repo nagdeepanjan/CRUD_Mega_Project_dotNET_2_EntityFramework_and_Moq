@@ -1,10 +1,11 @@
-﻿using System.Diagnostics.Contracts;
-using System.Security.Cryptography.X509Certificates;
-using Entities;
+﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 using Services;
+using System.Diagnostics.Contracts;
+using System.Security.Cryptography.X509Certificates;
 using Xunit.Abstractions;
 
 namespace CRUD_Tests
@@ -18,8 +19,8 @@ namespace CRUD_Tests
 
         public PersonsServiceTest(ITestOutputHelper testOutput)
         {
-            _personsService = new PersonsService(false);
-            _countriesService = new CountriesService(false);
+            _countriesService = new CountriesService(new DeepDbContext(new DbContextOptionsBuilder<DeepDbContext>().Options));
+            _personsService = new PersonsService(new DeepDbContext(new DbContextOptionsBuilder<DeepDbContext>().Options), _countriesService);
             _testOutputHelper = testOutput;
         }
 
