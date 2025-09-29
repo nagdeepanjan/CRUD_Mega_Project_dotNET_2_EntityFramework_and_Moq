@@ -11,6 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="countries.json" />
+    <Content Remove="persons.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="countries.json" />
+    <None Include="persons.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.20" />
   </ItemGroup>
 
