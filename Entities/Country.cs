@@ -10,5 +10,8 @@ namespace Entities
         [Key]
         public Guid CountryID { get; set; }
         public string? CountryName { get; set; }
+
+        //Navigation property
+        public virtual ICollection<Person>? Persons { get; set; }
     }
 }

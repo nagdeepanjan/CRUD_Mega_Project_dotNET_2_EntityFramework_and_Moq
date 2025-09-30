@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(DeepDbContext))]
-    [Migration("20250930011525_InsertPerson_StoredProcedure")]
-    partial class InsertPerson_StoredProcedure
+    [Migration("20250930130508_Minor")]
+    partial class Minor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace Entities.Migrations
                         new
                         {
                             CountryID = new Guid("501c6d33-1bbe-45f1-8fbd-2275913c6218"),
-                            CountryName = "China"
+                            CountryName = "Taiwan"
                         });
                 });
 
@@ -96,7 +96,15 @@ namespace Entities.Migrations
                     b.Property<bool>("ReceiveNewsLetters")
                         .HasColumnType("bit");
 
+                    b.Property<string>("TIN")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(8)")
+                        .HasDefaultValue("ABC12345")
+                        .HasColumnName("TaxIdentificationNumber");
+
                     b.HasKey("PersonID");
+
+                    b.HasIndex("CountryID");
 
                     b.ToTable("Persons", (string)null);
 
@@ -233,6 +241,20 @@ namespace Entities.Migrations
                             PersonName = "Verene",
                             ReceiveNewsLetters = true
                         });
+                });
+
+            modelBuilder.Entity("Entities.Person", b =>
+                {
+                    b.HasOne("Entities.Country", "Country")
+                        .WithMany("Persons")
+                        .HasForeignKey("CountryID");
+
+                    b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("Entities.Country", b =>
+                {
+                    b.Navigation("Persons");
                 });
 #pragma warning restore 612, 618
         }

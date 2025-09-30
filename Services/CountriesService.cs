@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 
@@ -14,7 +15,7 @@ namespace Services
 
         }
 
-        public CountryResponse AddCountry(CountryAddRequest? countryAddRequest)
+        public async Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest)
         {
             #region Validations
             //Validation: countryAddRequest parameter cannot be empty
@@ -38,23 +39,23 @@ namespace Services
             //Generate and add a new GUID for this country
             country.CountryID = Guid.NewGuid();
 
-            _db.Countries.Add(country);
-            _db.SaveChanges();
+            await _db.Countries.AddAsync(country);
+            await _db.SaveChangesAsync();
 
             return country.ToCountryResponse();
         }
 
-        public List<CountryResponse> GetAllCountries()
+        public async Task<List<CountryResponse>> GetAllCountries()
         {
-            return _db.Countries.Select(c => c.ToCountryResponse()).ToList();
+            return await _db.Countries.Select(c => c.ToCountryResponse()).ToListAsync();
         }
 
-        public CountryResponse? GetCountryByCountryID(Guid? countryID)
+        public async Task<CountryResponse?> GetCountryByCountryID(Guid? countryID)
         {
             if (countryID is null)
                 return null;
 
-            Country? country_from_list = _db.Countries.FirstOrDefault(c => c.CountryID == countryID);
+            Country? country_from_list = await _db.Countries.FirstOrDefaultAsync(c => c.CountryID == countryID);
 
             return country_from_list?.ToCountryResponse();
 

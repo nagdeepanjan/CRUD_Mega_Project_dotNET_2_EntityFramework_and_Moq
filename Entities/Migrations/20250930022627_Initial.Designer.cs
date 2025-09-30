@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(DeepDbContext))]
-    partial class DeepDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250930022627_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +62,7 @@ namespace Entities.Migrations
                         new
                         {
                             CountryID = new Guid("501c6d33-1bbe-45f1-8fbd-2275913c6218"),
-                            CountryName = "Taiwan"
+                            CountryName = "China"
                         });
                 });
 
@@ -94,14 +97,9 @@ namespace Entities.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TIN")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(8)")
-                        .HasDefaultValue("ABC12345")
-                        .HasColumnName("TaxIdentificationNumber");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PersonID");
-
-                    b.HasIndex("CountryID");
 
                     b.ToTable("Persons", (string)null);
 
@@ -238,20 +236,6 @@ namespace Entities.Migrations
                             PersonName = "Verene",
                             ReceiveNewsLetters = true
                         });
-                });
-
-            modelBuilder.Entity("Entities.Person", b =>
-                {
-                    b.HasOne("Entities.Country", "Country")
-                        .WithMany("Persons")
-                        .HasForeignKey("CountryID");
-
-                    b.Navigation("Country");
-                });
-
-            modelBuilder.Entity("Entities.Country", b =>
-                {
-                    b.Navigation("Persons");
                 });
 #pragma warning restore 612, 618
         }

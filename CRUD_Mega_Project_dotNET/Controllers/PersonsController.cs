@@ -20,7 +20,7 @@ namespace CRUD_Mega_Project_dotNET.Controllers
         
         [Route("/persons/index")]
         [Route("/")]
-        public IActionResult Index(string searchBy, string? searchString, string sortBy=nameof(PersonResponse.PersonName), SortOrderOptions sortOrder=SortOrderOptions.ASC)
+        public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy=nameof(PersonResponse.PersonName), SortOrderOptions sortOrder=SortOrderOptions.ASC)
         {
             ViewBag.SearchFields = new Dictionary<string, string>
             {
@@ -32,12 +32,12 @@ namespace CRUD_Mega_Project_dotNET.Controllers
                 { nameof(PersonResponse.Address), "Address" }
             };
 
-            List<PersonResponse> persons = _personsService.GetFilteredPersons(searchBy, searchString);
+            List<PersonResponse> persons = await _personsService.GetFilteredPersons(searchBy, searchString);
             ViewBag.CurrentSearchBy = searchBy;
             ViewBag.CurrentSearchString = searchString;
 
             //Sort
-            List<PersonResponse> sortedPersons =_personsService.GetSortedPersons(persons, sortBy, sortOrder);
+            List<PersonResponse> sortedPersons =await _personsService.GetSortedPersons(persons, sortBy, sortOrder);
             ViewBag.CurrentSortBy = sortBy;
             ViewBag.CurrentSortOrder = sortOrder.ToString();
 
@@ -48,9 +48,9 @@ namespace CRUD_Mega_Project_dotNET.Controllers
 
         //Executes when the user clicks on "Create Person" hyperlink
         [HttpGet("/persons/create")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            List<CountryResponse> countries=_countriesService.GetAllCountries();
+            List<CountryResponse> countries=await _countriesService.GetAllCountries();
             ViewBag.Countries = countries.Select(c => new SelectListItem { Text = c.CountryName, Value = c.CountryID.ToString() }); //Used for the select dropdown of countries
 
             return View();
@@ -58,11 +58,11 @@ namespace CRUD_Mega_Project_dotNET.Controllers
 
         
         [HttpPost("persons/create")]
-        public IActionResult Create(PersonAddRequest personAddRequest)
+        public async Task<IActionResult> Create(PersonAddRequest personAddRequest)
         {
             if (!ModelState.IsValid)
             {
-                List<CountryResponse> countries = _countriesService.GetAllCountries();
+                List<CountryResponse> countries = await _countriesService.GetAllCountries();
                 ViewBag.Countries = countries.Select(c =>
                     new SelectListItem() { Text = c.CountryName, Value = c.CountryID.ToString() });
 
@@ -71,22 +71,22 @@ namespace CRUD_Mega_Project_dotNET.Controllers
             }
 
             //call the service method
-            PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
+            PersonResponse personResponse = await _personsService.AddPerson(personAddRequest);
 
             //navigate to Index() action method (it makes another get request to "persons/index"
             return RedirectToAction("Index", "Persons");
         }
 
         [HttpGet("/persons/[action]/{personID}")]
-        public IActionResult Edit(Guid personID)
+        public async Task<IActionResult> Edit(Guid personID)
         {
-            PersonResponse? personResponse = _personsService.GetPersonByPersonID(personID);
+            PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personID);
             if (personResponse is null)
                 return RedirectToAction("Index");
             PersonUpdateRequest personUpdateRequest = personResponse.ToPersonUpdateRequest();
 
             //create the countries list to be used by the dropdown
-            List<CountryResponse> countries = _countriesService.GetAllCountries();
+            List<CountryResponse> countries = await _countriesService.GetAllCountries();
             ViewBag.Countries = countries.Select(c =>
                 new SelectListItem() { Text = c.CountryName, Value = c.CountryID.ToString() });
 
@@ -94,20 +94,20 @@ namespace CRUD_Mega_Project_dotNET.Controllers
         }
 
         [HttpPost("/persons/[action]/{personID}")]
-        public IActionResult Edit(PersonUpdateRequest personUpdateRequest)
+        public async Task<IActionResult> Edit(PersonUpdateRequest personUpdateRequest)
         {
-            PersonResponse personResponse= _personsService.GetPersonByPersonID(personUpdateRequest.PersonID);
+            PersonResponse personResponse= await _personsService.GetPersonByPersonID(personUpdateRequest.PersonID);
             if (personResponse is null)
                 return RedirectToAction("Index");
 
             if (ModelState.IsValid)
             {
-                PersonResponse updatedPerson= _personsService.UpdatePerson(personUpdateRequest);
+                PersonResponse updatedPerson= await _personsService.UpdatePerson(personUpdateRequest);
                 return RedirectToAction("Index");
             }
             else
             {
-                List<CountryResponse> countries = _countriesService.GetAllCountries();
+                List<CountryResponse> countries = await _countriesService.GetAllCountries();
                 ViewBag.Countries = countries.Select(c =>
                     new SelectListItem() { Text = c.CountryName, Value = c.CountryID.ToString() });
 
@@ -117,9 +117,9 @@ namespace CRUD_Mega_Project_dotNET.Controllers
         }
 
         [HttpGet("/persons/[action]/{personID}")]
-        public IActionResult Delete(Guid? personID)
+        public async Task<IActionResult> Delete(Guid? personID)
         {
-            PersonResponse? personResponse = _personsService.GetPersonByPersonID(personID);
+            PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personID);
             if (personResponse is null)
                 return RedirectToAction("Index");
 
@@ -127,9 +127,9 @@ namespace CRUD_Mega_Project_dotNET.Controllers
         }
 
         [HttpPost("/persons/[action]/{personID}")]
-        public IActionResult Delete(Guid personID)
+        public async Task<IActionResult> Delete(Guid personID)
         {
-            PersonResponse personresponse=_personsService.GetPersonByPersonID(personID);
+            PersonResponse personresponse=await _personsService.GetPersonByPersonID(personID);
             if(personresponse is null)
                 return RedirectToAction("Index");
 

@@ -39,11 +39,21 @@ namespace Entities
 
             foreach (Person person in persons)
                 modelBuilder.Entity<Person>().HasData(person);
+
+            //Fluent API
+            modelBuilder.Entity<Person>().Property(p => p.TIN)
+                .HasColumnName("TaxIdentificationNumber")
+                .HasColumnType("varchar(8)")
+                .HasDefaultValue("ABC12345");
+
+            //Table Relations (this is generally not necessary if the navigation properties are already being used in the entities)
+            //modelBuilder.Entity<Person>(p => { p.HasOne<Country>(c => c.Country).WithMany(c => c.Persons).HasForeignKey(p=>p.CountryID); });
+
         }
 
-        public List<Person> sp_GetAllPersons()              //Demonstrating a STORED Procedure
-        {
-            return Persons.FromSqlRaw("EXECUTE [dbo].[GetAllPersons]").ToList();
-        }
+        //public List<Person> sp_GetAllPersons()              //Demonstrating a STORED Procedure
+        //{
+        //    return Persons.FromSqlRaw("EXECUTE [dbo].[GetAllPersons]").ToList();
+        //}
     }
 }

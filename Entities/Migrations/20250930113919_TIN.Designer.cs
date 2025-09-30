@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entities.Migrations
 {
     [DbContext(typeof(DeepDbContext))]
-    [Migration("20250929174656_Initial")]
-    partial class Initial
+    [Migration("20250930113919_TIN")]
+    partial class TIN
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,12 @@ namespace Entities.Migrations
 
                     b.Property<bool>("ReceiveNewsLetters")
                         .HasColumnType("bit");
+
+                    b.Property<string>("TIN")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("varchar(8)")
+                        .HasDefaultValue("ABC12345")
+                        .HasColumnName("TaxIdentificationNumber");
 
                     b.HasKey("PersonID");
 
