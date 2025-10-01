@@ -8,15 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Entities
 {
-    public class DeepDbContext: DbContext
+    public class ApplicationDbContext: DbContext
     {
-        public DeepDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
 
         
-        public DbSet<Country> Countries { get; set; }
-        public DbSet<Person> Persons { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }           //Virtual is needed for Mocking
+        public virtual DbSet<Person> Persons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

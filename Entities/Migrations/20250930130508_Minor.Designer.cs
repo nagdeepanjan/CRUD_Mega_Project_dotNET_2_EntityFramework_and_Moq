@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities.Migrations
 {
-    [DbContext(typeof(DeepDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250930130508_Minor")]
     partial class Minor
     {

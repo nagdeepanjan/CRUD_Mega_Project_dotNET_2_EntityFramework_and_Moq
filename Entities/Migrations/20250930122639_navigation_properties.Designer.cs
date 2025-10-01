@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities.Migrations
 {
-    [DbContext(typeof(DeepDbContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     [Migration("20250930122639_navigation_properties")]
     partial class navigation_properties
     {

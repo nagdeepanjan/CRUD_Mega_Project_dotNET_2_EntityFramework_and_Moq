@@ -11,12 +11,12 @@ namespace Services
 {
     public class PersonsService : IPersonsService
     {
-        private readonly DeepDbContext _db;
+        private readonly ApplicationDbContext _db;
         private readonly ICountriesService _countriesService;
 
-        public PersonsService(DeepDbContext deepDbContext, ICountriesService countriesService)
+        public PersonsService(ApplicationDbContext applicationDbContext, ICountriesService countriesService)
         {
-            _db = deepDbContext;
+            _db = applicationDbContext;
             _countriesService = countriesService;
 
         }
@@ -106,7 +106,6 @@ namespace Services
             }
 
             return matchingPersons;
-
 
         }
 

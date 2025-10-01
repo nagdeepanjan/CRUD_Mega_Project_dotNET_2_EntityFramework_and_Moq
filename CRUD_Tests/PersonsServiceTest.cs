@@ -1,4 +1,5 @@
 ﻿using Entities;
+using EntityFrameworkCoreMock;
 using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
@@ -14,14 +15,26 @@ namespace CRUD_Tests
     {
         private readonly IPersonsService _personsService;
         private readonly ICountriesService _countriesService;
-
         private readonly ITestOutputHelper _testOutputHelper;       //Used to show output in the Test window in VS
 
         public PersonsServiceTest(ITestOutputHelper testOutput)
         {
-            _countriesService = new CountriesService(new DeepDbContext(new DbContextOptionsBuilder<DeepDbContext>().Options));
-            _personsService = new PersonsService(new DeepDbContext(new DbContextOptionsBuilder<DeepDbContext>().Options), _countriesService);
+            // Using original DB
+            //_countriesService = new CountriesService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options));
+            //_personsService = new PersonsService(new ApplicationDbContext(new DbContextOptionsBuilder<ApplicationDbContext>().Options), _countriesService);
             _testOutputHelper = testOutput;
+
+            //Using Mock
+            //Mocking DbContext
+            DbContextMock<ApplicationDbContext> dbContextMock = new DbContextMock<ApplicationDbContext>(new DbContextOptionsBuilder<ApplicationDbContext>().Options);
+            ApplicationDbContext dbContext = dbContextMock.Object;
+
+            //Mocking DbSet
+            dbContextMock.CreateDbSetMock(db => db.Countries, new List<Country> { });
+            dbContextMock.CreateDbSetMock(db => db.Persons, new List<Person> { });
+
+            _countriesService = new CountriesService(dbContext);
+            _personsService = new PersonsService(dbContext, _countriesService);
         }
 
         #region TEST AddPerson()

@@ -7,11 +7,11 @@ namespace Services
 {
     public class CountriesService : ICountriesService
     {
-        private readonly DeepDbContext _db;
+        private readonly ApplicationDbContext _db;
 
-        public CountriesService(DeepDbContext deepDbContext)
+        public CountriesService(ApplicationDbContext applicationDbContext)
         {
-            _db = deepDbContext;
+            _db = applicationDbContext;
 
         }
 
