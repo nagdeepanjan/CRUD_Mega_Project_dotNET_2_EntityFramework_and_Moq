@@ -18,7 +18,7 @@ namespace Entities
         public virtual DbSet<Country> Countries { get; set; }           //Virtual is needed for Mocking
         public virtual DbSet<Person> Persons { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)   //defines how model binds to database. Also used during migrations
         {
             base.OnModelCreating(modelBuilder);
 
