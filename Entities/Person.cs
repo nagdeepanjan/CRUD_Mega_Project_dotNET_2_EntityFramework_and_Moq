@@ -19,7 +19,7 @@ namespace Entities
         
         public DateTime? DateOfBirth { get; set; }
         
-        [StringLength(00)]
+        [StringLength(10)]
         public string? Gender { get; set; }
         
         [StringLength(200)]
