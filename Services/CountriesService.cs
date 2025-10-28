@@ -12,7 +12,6 @@ namespace Services
         public CountriesService(ApplicationDbContext applicationDbContext)
         {
             _db = applicationDbContext;
-
         }
 
         public async Task<CountryResponse> AddCountry(CountryAddRequest? countryAddRequest)
