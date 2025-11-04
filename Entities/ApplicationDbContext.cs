@@ -45,7 +45,10 @@ namespace Entities
                 .HasColumnName("TaxIdentificationNumber")
                 .HasColumnType("varchar(8)")
                 .HasDefaultValue("ABC12345");
-
+            
+            //modelBuilder.Entity<Person>().HasIndex(i => i.TIN).IsUnique();
+            //modelBuilder.Entity<Person>().HasCheckConstraint("CHK_TIN", "len([TIN])=8");
+            
             //Table Relations (this is generally not necessary if the navigation properties are already being used in the entities)
             //modelBuilder.Entity<Person>(p => { p.HasOne<Country>(c => c.Country).WithMany(c => c.Persons).HasForeignKey(p=>p.CountryID); });
 
